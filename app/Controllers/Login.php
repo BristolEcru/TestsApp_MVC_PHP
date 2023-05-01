@@ -18,6 +18,7 @@ class Login extends BaseController
         $session = session();
         $userModel = new UserModel();
 
+
         $email = $this->request->getVar('email');
         $password = $this->request->getVar('password');
 
@@ -35,13 +36,17 @@ class Login extends BaseController
 
         // Pobierz user_type_id użytkownika
         $userType = $user['user_type_id'];
+        $userName = $user['name'];
+        $userId = $user['id'];
+
 
         if ($userType == 0) {
             // przekieruj do panelu administratora
-            return redirect()->to('/TeacherPanel');
-        } else {
+            return redirect()->to('/teacher/teacherpanel/' . $userName);
+        } elseif ($userType == 1) {
             // przekieruj do panelu studenta
-            return redirect()->to('/StudentPanel');
+            return redirect()->to('/student/studentpanel/' . $userId)->with('userName', $userName);
+
         }
     }
 

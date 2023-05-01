@@ -8,4 +8,12 @@ class Home extends BaseController
     {
         return view('welcome_message');
     }
+
+    public function showpostarray()
+    {
+        echo '<pre>';
+        print_r($_POST);
+        echo '<pre>';
+
+    }
 }

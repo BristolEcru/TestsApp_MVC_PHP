@@ -22,6 +22,7 @@ class Register extends BaseController
     public function register()
     {
         $rules = [
+            'name' => ['rules' => 'required|min_length[3]|max_length[255]'],
             'email' => ['rules' => 'required|min_length[4]|max_length[255]|valid_email|is_unique[users.email]'],
             'password' => ['rules' => 'required|min_length[8]|max_length[255]'],
             'confirm_password' => ['label' => 'confirm password', 'rules' => 'matches[password]']
@@ -31,6 +32,7 @@ class Register extends BaseController
         if ($this->validate($rules)) {
             $model = new UserModel();
             $data = [
+                'name' => $this->request->getVar('name'),
                 'email' => $this->request->getVar('email'),
                 'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
             ];

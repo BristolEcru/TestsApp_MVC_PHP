@@ -7,8 +7,8 @@ use App\Models\UserModel;
 
 class MyResults extends BaseController
 {
-    public function index($type)
+    public function index($student_id)
     {
-        echo ' <h1>myquizzes' . $type . '</h>';
+        echo ' <h1> myquizzes' . $student_id . '</h1>';
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Student;
 
-
-
+use App\Controllers\BaseController;
 use App\Models\ChoiceModel;
 use App\Models\QuizModel;
+use App\Models\QuizQuestionModel;
 use Config\Services;
 use SebastianBergmann\Type\Exception;
 
@@ -41,7 +41,6 @@ class QuizzesToLoad extends BaseController
     public function checkresult()
     {
         $quiz_id = $this->request->getPost('quiz_id');
-        $quiz_id = $this->request->getPost('quiz_id');
 
         $quiz = $this->quizmodel->getQuizQuestions($quiz_id);
         $choices = $this->quizmodel->getChoicesToQuiz($quiz_id);
@@ -69,14 +68,13 @@ class QuizzesToLoad extends BaseController
     {
         $model = new QuizModel();
         $choicemodel = new ChoiceModel();
-
+        // Delete the choices for the question from the choicesbank table
+        $choicemodel->table('choicesbank')->where('choice_question_number', $questionNumber)->delete();
         // Delete the question from the questionbank table
         $model->table('questionbank')->where('question_number', $questionNumber)->delete();
 
-        // Delete the choices for the question from the choicesbank table
-        $choicemodel->table('choicesbank')->where('choice_question_number', $questionNumber)->delete();
+        return redirect()->route('questionbank');
 
-        return redirect()->to('/dashboard');
     }
 
     public function addQuestion()
@@ -107,11 +105,12 @@ class QuizzesToLoad extends BaseController
                 $choicemodel->table('choicesbank')->insert($choiceData);
             }
 
-            return view('add_question');
+            return view('manage/quiz/add_question');
         }
 
-        return view('add_question');
+        return view('manage/quiz/add_question');
     }
+
 
 
 }

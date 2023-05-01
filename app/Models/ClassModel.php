@@ -68,6 +68,68 @@ class ClassModel extends Model
 
         return $query->getResultArray();
     }
+    public function getClassesWithQuizzesAndStudents()
+    {
+        $builder = $this->db->table('classes');
+        $builder->from('classes c');
+        $builder->select('c.class_id, c.class_name, q.quiz_id, q.quiz_name, u.name');
+        $builder->join('quiz_assigned qa', 'qa.quiz_assigned_class_id = c.class_id');
+        $builder->join('quiz q', 'q.quiz_id = qa.quiz_assigned_quiz_id');
+        $builder->join('users u', 'u.student_class_id = c.class_id');
+
+        $builder->orderBy('classes.class_name', 'ASC');
+        $query = $builder->get();
+
+        $result = [];
+        foreach ($query->getResultArray() as $row) {
+            $class_id = $row['class_id'];
+            $result[$class_id]['class_name'] = $row['class_name'];
+            $result[$class_id]['quizzes'][$row['quiz_id']] = $row['quiz_name'];
+            $result[$class_id]['students'][$row['name']] = $row['name'];
+        }
+
+        // Pobierz wszystkie quizy
+        $builder = $this->db->table('quiz');
+        $query = $builder->get();
+        $available_quizzes = $query->getResultArray();
+
+        return [
+            'classes' => $result,
+            'quizzes' => $available_quizzes,
+        ];
+    }
+
+    public function getUnassignedQuizzes()
+    {
+        $builder = $this->db->table('classes');
+        $builder->select('class_id, class_name');
+
+        $classes = $builder->get()->getResultArray();
+
+        $unassigned_quizzes = [];
+        foreach ($classes as $class) {
+            $class_id = $class['class_id'];
+
+            $builder = $this->db->table('quiz');
+            $builder->select('quiz_id, quiz_name');
+            $builder->whereNotIn('quiz_id', function ($builder) use ($class_id) {
+                $builder->select('quiz_assigned_quiz_id');
+                $builder->from('quiz_assigned');
+                $builder->where('quiz_assigned_class_id', $class_id);
+            });
+
+            $query = $builder->get();
+
+            $quizzes = $query->getResultArray();
+            $unassigned_quizzes[$class['class_name']] = $quizzes;
+        }
+
+        return $unassigned_quizzes;
+    }
+
+
+
+
     public function getClassesWithUsers()
     {
         $classData = $this->findAll();

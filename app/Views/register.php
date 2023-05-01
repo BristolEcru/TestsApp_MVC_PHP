@@ -36,23 +36,24 @@
                     <div class="card-body">
                         <h5 class="card-title mb-4">Register</h5>
                         <form action="<?php echo base_url('/register'); ?>" method="post">
+
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
                                 <input type="email" class="form-control" id="email" name="email"
                                     value="<?= set_value('email') ?>">
                                 <?php if (isset($validation)): ?>
-                                <small class="text-danger">
-                                    <?= $validation->getError('email') ?>
-                                </small>
+                                    <small class="text-danger">
+                                        <?= $validation->getError('email') ?>
+                                    </small>
                                 <?php endif; ?>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password">
                                 <?php if (isset($validation)): ?>
-                                <small class="text-danger">
-                                    <?= $validation->getError('password') ?>
-                                </small>
+                                    <small class="text-danger">
+                                        <?= $validation->getError('password') ?>
+                                    </small>
                                 <?php endif; ?>
                             </div>
                             <div class="mb-3">
@@ -60,9 +61,19 @@
                                 <input type="password" class="form-control" id="confirm_password"
                                     name="confirm_password">
                                 <?php if (isset($validation)): ?>
-                                <small class="text-danger">
-                                    <?= $validation->getError('confirm_password') ?>
-                                </small>
+                                    <small class="text-danger">
+                                        <?= $validation->getError('confirm_password') ?>
+                                    </small>
+                                <?php endif; ?>
+                            </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="name" class="form-control" id="name" name="name"
+                                    value="<?= set_value('name') ?>">
+                                <?php if (isset($validation)): ?>
+                                    <small class="text-danger">
+                                        <?= $validation->getError('name') ?>
+                                    </small>
                                 <?php endif; ?>
                             </div>
                             <div class="d-grid gap-2">

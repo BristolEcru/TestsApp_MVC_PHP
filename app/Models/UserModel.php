@@ -23,18 +23,23 @@ class UserModel extends Model
     public function getStudentsGroupedByClass()
     {
         $builder = $this->db->table('users');
-        $builder->select('users.*, classes.class_name');
+        $builder->select('users.*, classes.class_name, quiz.quiz_name');
         $builder->join('classes', 'users.student_class_id = classes.class_id');
+        $builder->join('quiz_assigned', 'quiz_assigned.quiz_assigned_student_id = users.quiz_assigned_id');
+        $builder->join('quiz', 'quiz.quiz_id = quiz_assigned.quiz_assigned_quiz_id');
         $builder->orderBy('classes.class_name', 'ASC');
         $query = $builder->get();
 
         $result = [];
         foreach ($query->getResultArray() as $row) {
+            $row['quiz_assigned_quiz_id'] = $row['quiz_name']; // zamiana ID na nazwę quizu
             $result[$row['class_name']][] = $row;
+
         }
 
         return $result;
     }
+
     protected $DBGroup = 'default';
     protected $table = 'users';
     protected $primaryKey = 'id';
@@ -43,7 +48,7 @@ class UserModel extends Model
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $protectFields = true;
-    protected $allowedFields = ['email', 'password'];
+    protected $allowedFields = ['email', 'password', 'name'];
 
     // Dates
     protected $useTimestamps = true;

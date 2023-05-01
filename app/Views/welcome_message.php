@@ -12,8 +12,8 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Quiz App</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,36 +31,39 @@
 
     <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h1>Welcome to the Quiz App</h1><br>
-                <h4>Choose panel to start:</h4>
-                <br>
-                <hr><br>
 
+            <div class="col-md-8">
 
                 <div class="container mt-4">
-                    <div class="row justify-content-center">
-                        <div class="col-md-12">
+                    <h1>Welcome to the Quiz App</h1><br>
+                    <h4>Choose panel to start:</h4>
+                    <br>
+                    <hr><br>
+                </div <div class="container mt-4">
+                <div class="col-md-12">
 
-                            <div class="d-flex justify-content-center">
-                                <a href="login" class="btn btn-warning btn-lg btn-block mr-4">I AM A STUDENT</a>
-                                <a href="login" class="btn btn-secondary btn-lg btn-block">I AM A TEACHER</a>
-                            </div>
+                    <div class="d-flex justify-content-center">
+                        <a href="login" class="btn btn-warning btn-lg btn-block mr-4">I AM A STUDENT</a>
+                        <a href="login" class="btn btn-secondary btn-lg btn-block">I AM A TEACHER</a>
+                    </div>
+                </div>
+                <br>
+                <hr>
+            </div>
+        </div>
+    </div>
+    </div>
 
-                            <br>
-                            <hr>
-                            <footer class="bg-light text-center py-3">
-                                <p>&copy; 2023 Quiz App</p>
-                            </footer>
+    <footer class="bg-light text-center py-3 mt-auto">
+        <p>&copy; 2023 Quiz App</p>
+    </footer>
 
-                            <!-- jQuery and Bootstrap JS -->
-                            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-                                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-                                crossorigin="anonymous">
-                            </script>
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-                                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNSbNjn"
-                                crossorigin="anonymous">
-                            </script>
-                            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-                                integrity="sha384-JjSmV
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNSbNjn" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmV
+</body></html>

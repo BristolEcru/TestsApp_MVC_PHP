@@ -44,35 +44,48 @@ $routes->post('/login', 'Login::authenticate', ['filter' => 'guestFilter']);
 $routes->get('/logout', 'Login::logout', ['filter' => 'authFilter']);
 $routes->get('/home', 'Home::index', ['filter' => 'authFilter']);
 
-$routes->group('student', ['namespace' => 'App\Controllers\Student'], function ($routes) {
-    $routes->get('studentpanel', 'StudentPanel::index');
-    $routes->get('myquizzes/(:any)', 'MyQuizzes::index/$1');
-    $routes->get('myresults/(:any)', 'MyResults::index/$1');
 
+
+$routes->group('student', ['namespace' => 'App\Controllers\Student'], function ($routes) {
+    $routes->get('studentpanel/myquizzes/(:num)', 'MyQuizzes::index/$1', ['as' => 'myquizzes']);
+    $routes->get('studentpanel/myresults/(:num)', 'MyResults::index/$1', ['as' => 'myresults']);
+    $routes->get('studentpanel/quiztoload/(:any)', 'QuizzesToLoad::quiztoload/$1', ['as' => 'quiztoload']);
+    $routes->post('studentpanel/quiztoload/checkresult', 'QuizzesToLoad::checkresult', ['as' => 'checkresult']);
+
+    $routes->get('studentpanel/(:any)', 'StudentPanel::index/$1');
 });
 
+$routes->group('teacher', ['namespace' => 'App\Controllers\Teacher'], function ($routes) {
+    $routes->get('teacherpanel/students', 'Students::index', ['as' => 'students']);
+
+    $routes->get('teacherpanel/classes', 'Classes::index', ['as' => 'classes']);
+
+    $routes->get('quizassignedcontroller/quiztoclassform', 'QuizAssignedController::quiztoclassform', ['as' => 'quiztoclassform']);
+    $routes->get('quizassignedcontroller/assignquiztoclass', 'QuizAssignedController::assignquiztoclass', ['as' => 'assignquiztoclass']);
+
+    $routes->get('teacherpanel/quizzes', 'Quizzes::index', ['as' => 'quizzes']);
+    $routes->get('teacherpanel/quizzes/createquiz', 'Quizzes::createQuiz');
+
+    $routes->get('teacherpanel/quizzes/questionbank', 'Quizzes::questionbank', ['as' => 'questionbank']);
+    $routes->get('teacherpanel/quizzes/questionbank/add_new_questions', 'Quizzes::addnewquestions', ['as' => 'addnewquestions']);
+    $routes->get('teacherpanel/(:any)', 'TeacherPanel::index/$1');
 
 
-
-
+});
 
 /*
-$routes->group('admin', ['namespace' => 'App\Controllers\Teacher'], function ($routes) {
-$routes->get('home', 'Home::index');
-$routes->get('users', 'Users::index');
-});
-* --------------------------------------------------------------------
-* Additional Routing
-* --------------------------------------------------------------------
-*
-* There will often be times that you need additional routing and you
-* need it to be able to override any defaults in this file. Environment
-* based routes is one such time. require() additional route files here
-* to make that happen.
-*
-* You will have access to the $routes object within that file without
-* needing to reload it.
-*/
+ * --------------------------------------------------------------------
+ * Additional Routing
+ * --------------------------------------------------------------------
+ *
+ * There will often be times that you need additional routing and you
+ * need it to be able to override any defaults in this file. Environment
+ * based routes is one such time. require() additional route files here
+ * to make that happen.
+ *
+ * You will have access to the $routes object within that file without
+ * needing to reload it.
+ */
 if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }

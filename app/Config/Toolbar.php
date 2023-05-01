@@ -38,7 +38,7 @@ class Toolbar extends BaseConfig
         Database::class,
         Logs::class,
         Views::class,
-        // \CodeIgniter\Debug\Toolbar\Collectors\Cache::class,
+            // \CodeIgniter\Debug\Toolbar\Collectors\Cache::class,
         Files::class,
         Routes::class,
         Events::class,
@@ -74,6 +74,7 @@ class Toolbar extends BaseConfig
      * This MUST have a trailing slash.
      */
     public string $viewsPath = SYSTEMPATH . 'Debug/Toolbar/Views/';
+
 
     /**
      * --------------------------------------------------------------------------

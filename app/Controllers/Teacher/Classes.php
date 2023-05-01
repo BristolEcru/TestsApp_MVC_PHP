@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Teacher;
 
 use App\Controllers\BaseController;
 use App\Models\ClassModel;
 use App\Models\UserModel;
-
 use App\Models\QuizModel;
+use App\Models\QuizAssignedModel;
 use CodeIgniter\Controller;
 
 class Classes extends Controller
@@ -14,8 +14,10 @@ class Classes extends Controller
     public function index()
     {
         $classModel = new ClassModel();
-        $data['classes'] = $classModel->getClassesData();
-        return view('classes', $data);
+        $data['classes'] = $classModel->getClassesWithQuizzesAndStudents();
+
+        return view('manage/classes', $data);
+
     }
 
 
@@ -24,7 +26,7 @@ class Classes extends Controller
         helper(['form', 'url']);
 
         $rules = [
-            'class_name' => 'required|min_length[3]|max_length[255]',
+            'class_name' => 'required|min_length[1]|max_length[255]',
         ];
 
         if ($this->validate($rules)) {
@@ -46,7 +48,7 @@ class Classes extends Controller
 
         if (
             !$this->validate([
-                'class_name' => 'required|min_length[3]'
+                'class_name' => 'required|min_length[1]'
             ])
         ) {
             $data['validation'] = $this->validator;
