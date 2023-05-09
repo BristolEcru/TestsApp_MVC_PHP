@@ -1,5 +1,5 @@
-<?php $this->extend('layout\studentlayout') 
-use App\Controllers\Student\MyResults;?>
+<?php $this->extend('layout\studentlayout') ?>
+
 
 <?= $this->section('content') ?>
 
@@ -8,7 +8,7 @@ use App\Controllers\Student\MyResults;?>
         <div class="col-md-8">
             <hr>
             <?php
-            $numberOfCorrectAnswers = calculateCorrectAnswers($quiz, $choices, $result);
+            $numberOfCorrectAnswers = calculateCorrectAnswers($quiz, $choices, $result, $quiz_name);
             ?>
             <h3>Your result is:
                 <?php echo "$numberOfCorrectAnswers points" ?>
@@ -85,7 +85,7 @@ use App\Controllers\Student\MyResults;?>
 
 <?php
 
-function calculateCorrectAnswers($quiz, $choices, $result, $quizname, $student_id, $quiz_assigned_id)
+function calculateCorrectAnswers($quiz, $choices, $result)
 {
     $correctAnswers = 0;
     $max_points = count($quiz);
@@ -109,14 +109,10 @@ function calculateCorrectAnswers($quiz, $choices, $result, $quizname, $student_i
 
     $points = $correctAnswers;
     $data = [
-        'student_id' => $student_id,
-        'quiz_assigned_id' => $quiz_assigned_id,
         'points' => $points,
         'max_points' => $max_points,
-        'quiz_name' => $quizname
     ];
-    $myresultsmodel= new MyResultsModel();
-    $myresultsmodel->add_result($student_id, $quiz_assigned_id, $points, $max_points, $quizname);
+
 
     return $correctAnswers;
 }

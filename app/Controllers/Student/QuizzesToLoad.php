@@ -5,9 +5,11 @@ namespace App\Controllers\Student;
 use App\Controllers\BaseController;
 use App\Models\ChoiceModel;
 use App\Models\QuizModel;
+use App\Models\MyResultsModel;
 use App\Models\QuizQuestionModel;
 use Config\Services;
 use SebastianBergmann\Type\Exception;
+use CodeIgniter\Session\Session;
 
 class QuizzesToLoad extends BaseController
 {
@@ -24,12 +26,15 @@ class QuizzesToLoad extends BaseController
         return view('quizzesToChose', $data);
     }
 
-    public function quiztoload($quiz_id)
+    public function quiztoload($quiz_assigned_quiz_id, $quiz_assigned_id)
     {
-        $data['quiz'] = $this->quizmodel->getQuizQuestions($quiz_id);
-        $data['choices'] = $this->quizmodel->getChoicesToQuiz($quiz_id);
-        $data['quizname'] = $this->quizmodel->getQuizName($quiz_id);
-        $data['quiz_id'] = $this->quizmodel->getQuizId($quiz_id);
+
+        $data['quiz'] = $this->quizmodel->getQuizQuestions($quiz_assigned_quiz_id);
+        $data['choices'] = $this->quizmodel->getChoicesToQuiz($quiz_assigned_quiz_id);
+        $data['quiz_name'] = $this->quizmodel->getQuizName($quiz_assigned_quiz_id);
+        $data['quiz_id'] = $this->quizmodel->getQuizId($quiz_assigned_quiz_id);
+        $data['assignment_id'] = $quiz_assigned_id;
+
 
         return view('play_quiz', $data);
     }
@@ -41,10 +46,13 @@ class QuizzesToLoad extends BaseController
     public function checkresult()
     {
         $quiz_id = $this->request->getPost('quiz_id');
-
         $quiz = $this->quizmodel->getQuizQuestions($quiz_id);
         $choices = $this->quizmodel->getChoicesToQuiz($quiz_id);
-        $quizname = $this->quizmodel->getQuizName($quiz_id);
+        $quiz_name = $this->quizmodel->getQuizName($quiz_id);
+
+        $quiz_assigned_id = $this->request->getPost('assignment_id');
+
+
 
         $results = array();
         foreach ($quiz as $question) {
@@ -55,13 +63,17 @@ class QuizzesToLoad extends BaseController
             $results[$question_number] = $this->request->getPost('question' . $question_number);
         }
 
+        $myresult = new MyResultsModel();
+        $session = session();
+        $student_id = $session->get('id');
+
+        $myresult->calculateCorrectAnswers($quiz, $choices, $quiz_assigned_id, $results, $student_id, $quiz_name);
         $data['quiz'] = $quiz;
         $data['choices'] = $choices;
-        $data['quizname'] = $quizname;
+        $data['quiz_name'] = $quiz_name;
         $data['result'] = $results;
 
         return view('quiz_result', $data);
-
     }
 
     public function deleteQuestion($questionNumber)

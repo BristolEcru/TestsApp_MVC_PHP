@@ -11,7 +11,7 @@ class StudentPanel extends BaseController
     {
         $user = new UserModel();
         $userName = $user->getUserById($userId)['name'];
-        var_dump($userName);
+
         $data['user_id'] = $userId;
         $data['user_name'] = $userName;
 

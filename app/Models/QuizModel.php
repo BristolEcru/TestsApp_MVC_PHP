@@ -74,9 +74,12 @@ class QuizModel extends Model
         if ($num_data_returned < 1) {
             echo "There is no data in the database";
         } else {
-            return $result;
+
+            return $result->quiz_name;
         }
     }
+
+
     public function getQuizId($quiz_id)
     {
         $db = \Config\Database::connect();

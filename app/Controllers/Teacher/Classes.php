@@ -19,8 +19,57 @@ class Classes extends Controller
         return view('manage/classes', $data);
 
     }
+    public function createclassform()
+    {
+        return view('manage/class/createclassform');
 
+    }
+    public function addClass()
+    {
+        $classModel = new ClassModel();
+        $className = $this->request->getPost('class_name');
+        $classModel->createClass($className);
+        return redirect()->to(route_to('classes'));
 
+    }
+
+    public function deleteclassform()
+    {
+        $classid = $this->request->getPost('class_id');
+        $data['class_id'] = $classid;
+
+        return view('manage/class/deleteclassform', $data);
+    }
+    public function deleteclass()
+    {
+        $classModel = new ClassModel();
+        $classid = $this->request->getPost('class_id');
+        $classModel->deleteClass($classid);
+
+        return redirect()->to(route_to('classes'));
+    }
+
+    public function changeclassform()
+    {
+        $classModel = new ClassModel();
+
+        $class_name = $this->request->getPost('class_name');
+        $user_id = $this->request->getPost('user_id');
+
+        $data['user_id'] = $user_id;
+        $data['class_name'] = $class_name;
+        $data['classes'] = $classModel->getClassesWhere($class_name);
+
+        return view('/changeclassform', $data);
+    }
+    public function changeclass()
+    {
+        $classModel = new ClassModel();
+        $class_id = $this->request->getPost('class_id');
+        $user_id = $this->request->getPost('user_id');
+        $classModel->updateStudentClass($user_id, $class_id);
+        return redirect()->to(route_to('classes'));
+    }
     public function store()
     {
         helper(['form', 'url']);

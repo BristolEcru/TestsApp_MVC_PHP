@@ -38,14 +38,15 @@ class Login extends BaseController
         $userType = $user['user_type_id'];
         $userName = $user['name'];
         $userId = $user['id'];
-
+        $session->set('id', $userId);
+        $session->set('navbar_user_id', $userId);
 
         if ($userType == 0) {
             // przekieruj do panelu administratora
             return redirect()->to('/teacher/teacherpanel/' . $userName);
         } elseif ($userType == 1) {
             // przekieruj do panelu studenta
-            return redirect()->to('/student/studentpanel/' . $userId)->with('userName', $userName);
+            return redirect()->to('/student/studentpanel/' . $userId);
 
         }
     }

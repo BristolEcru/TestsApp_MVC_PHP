@@ -3,12 +3,15 @@
 <?= $this->section('content') ?>
 <div class="container"><br>
     <h1>
-        <?= $quizname->quiz_name ?> quiz
+        <?= $quiz_name ?> quiz
     </h1>
     <form action="<?php echo route_to('checkresult'); ?>" method="post">
         <div class="form-group">
 
-            <input type="hidden" name="quiz_id" value="<?= $quiz_id->quiz_id ?>">
+            <input type="hidden" name="quiz_id" value="<?php echo $quiz_id->quiz_id ?>">
+            <input type="hidden" name="assignment_id" value="<?php echo $assignment_id ?>">
+
+
 
             <?php shuffle($quiz); ?>
 
@@ -44,3 +47,44 @@
 </div>
 
 <?= $this->endSection() ?>
+
+<?php
+
+function calculateCorrectAnswers($quiz, $choices, $result, $quizname, $student_id, $quiz_assigned_id)
+{
+    $correctAnswers = 0;
+    $max_points = count($quiz);
+
+    foreach ($quiz as $que) {
+        $isQuestionCorrect = true;
+
+        foreach ($choices as $choice) {
+            if ($choice->question_number == $que->question_number && $choice->choice_is_correct == 1) {
+                if (!isset($result[$que->question_number]) || $result[$que->question_number] != $choice->choice_id) {
+                    $isQuestionCorrect = false;
+                    break;
+                }
+            }
+        }
+
+        if ($isQuestionCorrect) {
+            $correctAnswers++;
+        }
+    }
+
+    $points = $correctAnswers;
+    $data = [
+        'student_id' => $student_id,
+        'quiz_assigned_id' => $quiz_assigned_id,
+        'points' => $points,
+        'max_points' => $max_points,
+        'quiz_name' => $quizname
+    ];
+    $myresultsmodel = new MyResultsModel();
+    $myresultsmodel->add_result($student_id, $quiz_assigned_id, $points, $max_points, $quizname);
+
+    return $correctAnswers;
+}
+
+
+?>

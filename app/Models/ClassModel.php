@@ -16,6 +16,7 @@ class ClassModel extends Model
         parent::__construct();
         $this->userModel = new UserModel();
     }
+
     public function getUsersByClassId($class_id)
     {
         $query = $this->userModel->select('*')
@@ -31,10 +32,24 @@ class ClassModel extends Model
         $query = $builder->get();
         return $query->getResultArray();
     }
-
+    public function getClassesWhere($class_name)
+    {
+        $builder = $this->db->table('classes');
+        $builder->where('class_name !=', $class_name);
+        $builder->orderBy('class_name', 'ASC');
+        $query = $builder->get();
+        return $query->getResultArray();
+    }
     public function getClassById($id)
     {
         return $this->find($id);
+    }
+    public function updateStudentClass($user_id, $class_id)
+    {
+        $this->db->table('users')
+            ->where('id', $user_id)
+            ->set('student_class_id', $class_id)
+            ->update();
     }
 
     public function updateClass($id, $data)
@@ -52,6 +67,14 @@ class ClassModel extends Model
         $this->insert($data);
         return $this->getInsertID();
     }
+    public function deleteClass($id)
+    {
+
+        $this->db->table('classes')
+            ->where('class_id', $id)
+            ->delete();
+    }
+
     public function getClassByName($className)
     {
         $class = $this->where('class_name', $className)->first();
@@ -73,9 +96,9 @@ class ClassModel extends Model
         $builder = $this->db->table('classes');
         $builder->from('classes c');
         $builder->select('c.class_id, c.class_name, q.quiz_id, q.quiz_name, u.name');
-        $builder->join('quiz_assigned qa', 'qa.quiz_assigned_class_id = c.class_id');
-        $builder->join('quiz q', 'q.quiz_id = qa.quiz_assigned_quiz_id');
-        $builder->join('users u', 'u.student_class_id = c.class_id');
+        $builder->join('quiz_assigned qa', 'qa.quiz_assigned_class_id = c.class_id', 'left');
+        $builder->join('quiz q', 'q.quiz_id = qa.quiz_assigned_quiz_id', 'left');
+        $builder->join('users u', 'u.student_class_id = c.class_id', 'left');
 
         $builder->orderBy('classes.class_name', 'ASC');
         $query = $builder->get();
@@ -84,8 +107,12 @@ class ClassModel extends Model
         foreach ($query->getResultArray() as $row) {
             $class_id = $row['class_id'];
             $result[$class_id]['class_name'] = $row['class_name'];
-            $result[$class_id]['quizzes'][$row['quiz_id']] = $row['quiz_name'];
-            $result[$class_id]['students'][$row['name']] = $row['name'];
+            if ($row['quiz_id']) {
+                $result[$class_id]['quizzes'][$row['quiz_id']] = $row['quiz_name'];
+            }
+            if ($row['name']) {
+                $result[$class_id]['students'][$row['name']] = $row['name'];
+            }
         }
 
         // Pobierz wszystkie quizy
@@ -98,6 +125,7 @@ class ClassModel extends Model
             'quizzes' => $available_quizzes,
         ];
     }
+
 
     public function getUnassignedQuizzes()
     {

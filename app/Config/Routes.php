@@ -46,27 +46,46 @@ $routes->get('/home', 'Home::index', ['filter' => 'authFilter']);
 
 
 
-$routes->group('student', ['namespace' => 'App\Controllers\Student'], function ($routes) {
-    $routes->get('studentpanel/myquizzes/(:num)', 'MyQuizzes::index/$1', ['as' => 'myquizzes']);
-    $routes->get('studentpanel/myresults/(:num)', 'MyResults::index/$1', ['as' => 'myresults']);
-    $routes->get('studentpanel/quiztoload/(:any)', 'QuizzesToLoad::quiztoload/$1', ['as' => 'quiztoload']);
+$routes->group('student', ['namespace' => 'App\Controllers\Student', 'filter' => 'studentFilter'], function ($routes) {
+    $routes->get('studentpanel/myquizzes/(:any)', 'MyQuizzes::index/$1', ['as' => 'myquizzes']);
+    $routes->get('studentpanel/myresults/(:any)', 'MyResults::index/$1', ['as' => 'myresults']);
+
     $routes->post('studentpanel/quiztoload/checkresult', 'QuizzesToLoad::checkresult', ['as' => 'checkresult']);
 
+    $routes->get('studentpanel/quiztoload/(:any)/(:any)', 'QuizzesToLoad::quiztoload/$1/$2', ['as' => 'quiztoload']);
     $routes->get('studentpanel/(:any)', 'StudentPanel::index/$1');
 });
 
 $routes->group('teacher', ['namespace' => 'App\Controllers\Teacher'], function ($routes) {
     $routes->get('teacherpanel/students', 'Students::index', ['as' => 'students']);
+    $routes->get('teacherpanel/statistics', 'Students::viewStatistics', ['as' => 'statistics']);
 
     $routes->get('teacherpanel/classes', 'Classes::index', ['as' => 'classes']);
+    $routes->get('teacherpanel/createclassform', 'Classes::createclassform', ['as' => 'createclassform']);
+    $routes->post('teacherpanel/addclass', 'Classes::addclass', ['as' => 'addclass']);
+    $routes->post('teacherpanel/deleteclassform', 'Classes::deleteclassform', ['as' => 'deleteclassform']);
+    $routes->post('teacherpanel/deleteclass', 'Classes::deleteclass', ['as' => 'deleteclass']);
+
+    $routes->post('teacherpanel/deletestudent', 'Students::deletestudent', ['as' => 'deletestudent']);
+    $routes->post('teacherpanel/editstudent', 'Students::editstudent', ['as' => 'editstudent']);
+    $routes->post('teacherpanel/removestudentfromclass', 'Students::removestudentfromclass', ['as' => 'removestudentfromclass']);
+
 
     $routes->get('quizassignedcontroller/quiztoclassform', 'QuizAssignedController::quiztoclassform', ['as' => 'quiztoclassform']);
     $routes->get('quizassignedcontroller/assignquiztoclass', 'QuizAssignedController::assignquiztoclass', ['as' => 'assignquiztoclass']);
 
+    $routes->post('quizassignedcontroller/assignquiztostudentform', 'QuizAssignedController::assignquiztostudentform', ['as' => 'assignquiztostudentform']);
+    $routes->post('quizassignedcontroller/assignquiztostudent', 'QuizAssignedController::assignquiztostudent', ['as' => 'assignquiztostudent']);
+
+    $routes->post('quizassignedcontroller/changeclassform', 'Classes::changeclassform', ['as' => 'changeclassform']);
+    $routes->post('quizassignedcontroller/changeclass', 'Classes::changeclass', ['as' => 'changeclass']);
+
     $routes->get('teacherpanel/quizzes', 'Quizzes::index', ['as' => 'quizzes']);
-    $routes->get('teacherpanel/quizzes/createquiz', 'Quizzes::createQuiz');
+
+
 
     $routes->get('teacherpanel/quizzes/questionbank', 'Quizzes::questionbank', ['as' => 'questionbank']);
+    $routes->post('teacherpanel/quizzes/createquiz', 'Quizzes::createquiz', ['as' => 'createquiz']);
     $routes->get('teacherpanel/quizzes/questionbank/add_new_questions', 'Quizzes::addnewquestions', ['as' => 'addnewquestions']);
     $routes->get('teacherpanel/(:any)', 'TeacherPanel::index/$1');
 

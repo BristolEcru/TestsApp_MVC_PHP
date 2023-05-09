@@ -7,7 +7,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
+
                 <th scope="col">Class Name</th>
                 <th scope="col">Quiz Assigned</th>
                 <th scope="col">Students</th>
@@ -15,9 +15,14 @@
             </tr>
         </thead>
         <tbody>
-            <div>
-                <a class="btn btn-warning " type="button" id="" href="<?php echo route_to('quiztoclassform'); ?>">
+            <div class="block d-flex justify-content-between">
+                <a class="btn btn-primary mr-3" type="button" id="" href="<?php echo route_to('quiztoclassform'); ?>">
                     Assign new quiz to the class
+                </a>
+
+                <a class="btn btn-secondary ml-auto" type="button" id=""
+                    href="<?php echo route_to('createclassform'); ?>">
+                    Create new class
                 </a>
             </div> <br>
 
@@ -25,9 +30,7 @@
             foreach ($classes['classes'] as $class_id => $class_data): ?>
 
                 <tr>
-                    <th scope="row">
-                        <?= $class_id; ?>
-                    </th>
+
                     <td>
 
                         <?= $class_data['class_name']; ?>
@@ -50,8 +53,14 @@
                     </td>
 
                     <td>
-                        <a href="<?= site_url('classes/edit/' . $class_id); ?>" class="btn btn-primary btn-sm mr-2">Edit</a>
-                        <a href="<?= site_url('classes/delete/' . $class_id); ?>" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="<?= site_url('classes/delete/' . $class_id); ?>" class="btn btn-warning btn-sm">Delete
+                            Quiz from the class</a>
+
+                        <form action="<?php echo route_to('deleteclassform'); ?>" method="POST">
+                            <input type="hidden" name="class_id" value="<?= $class_id ?>">
+                            <button type="submit" class="btn btn-danger btn-sm mr-2">Delete class</button>
+                        </form>
+
                     </td>
                 </tr>
             <?php endforeach; ?>

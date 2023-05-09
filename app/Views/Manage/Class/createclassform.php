@@ -1,6 +1,11 @@
-<div class="container mt-4">
+<?php $this->extend('layout\teacherlayout') ?>
+
+<?= $this->section('content') ?>
+
+<div class="container col-md-4 mt-4">
     <h1>Add New Class</h1>
-    <form action="<?= site_url('class/store') ?>" method="post">
+    <form method="POST" action="<?php echo route_to('addclass'); ?>">
+
         <?= csrf_field() ?>
         <div class="form-group">
             <label for="class_name">Class Name:</label>
@@ -9,3 +14,5 @@
         <button type="submit" class="btn btn-primary">Add Class</button>
     </form>
 </div>
+
+<?= $this->endSection() ?>

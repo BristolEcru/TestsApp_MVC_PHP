@@ -10,22 +10,28 @@ class StudentFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
-        $userType = $session->get('user_type_id');
+        $user_id = $session->get('id');
 
-
-        if (!session()->get('isLoggedIn')) {
+        if (!$user_id) {
             return redirect()->to('/login');
-        }
-
-        if ($userType !== 1) { // Jeśli zalogowany użytkownik nie jest studentem
-            return redirect()->to('/'); // przekieruj na stronę główną lub gdziekolwiek indziej
         }
 
         return; // W przeciwnym wypadku nie rób nic i pozwól przejść dalej
     }
 
-    public function after(RequestInterface $request, ResponseInterface $response)
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
         // Metoda after zostaje wywołana po zakończeniu akcji kontrolera
     }
+    public function getStudentIdCell(RequestInterface $request)
+    {
+        $session = session();
+        $user_id = $session->get('id');
+
+        $session->set('id', $user_id);
+        return [
+            'user_id' => $user_id,
+        ];
+    }
+
 }

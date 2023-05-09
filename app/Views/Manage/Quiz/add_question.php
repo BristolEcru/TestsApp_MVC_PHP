@@ -6,12 +6,12 @@
     <hr><br>
 
     <?php if (isset($validation)): ?>
-    <div style="color: red;">
-        <?php echo $validation->listErrors(); ?>
-    </div>
+        <div style="color: red;">
+            <?php echo $validation->listErrors(); ?>
+        </div>
     <?php endif; ?>
 
-    <?php echo form_open('QuizzesToLoad/addQuestion'); ?>
+    <?php echo form_open('Teacher/Quizzes/addQuestion'); ?>
     <label for="question_text">Treść pytania:</label>
 
 

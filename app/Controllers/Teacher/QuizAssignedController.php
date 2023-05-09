@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 
 
 use App\Models\ClassModel;
+use App\Models\QuizModel;
 use App\Models\QuizAssignedModel;
 use CodeIgniter\API\ResponseTrait;
 
@@ -61,16 +62,36 @@ class QuizAssignedController extends BaseController
         return redirect()->to(route_to('classes'));
     }
 
-
-
-    public function assignQuizToStudent()
+    public function assignquiztostudentform()
     {
-        // przypisz quiz do ucznia
-        $student_id = $this->request->getVar('student_id');
+        $student_id = ($this->request->getVar('user_id'));
         $quiz_id = $this->request->getVar('quiz_id');
+        $quizmodel = new QuizModel();
 
-        $this->quizAssignedModel->assignQuizToStudent($student_id, $quiz_id);
 
-        return $this->respondCreated(['message' => 'Quiz assigned to student']);
+        $data['user_id'] = $student_id;
+        $data['quiz_id'] = $quiz_id;
+        $data['quizzes'] = $quizmodel->getQuizzes();
+
+        return view('/quiztostudentform', $data);
     }
+
+
+    public function assignquiztostudent()
+    {
+
+        // przypisz quiz do ucznia
+        $student_id = $this->request->getPost('user_id');
+        $quiz_id = $this->request->getPost('quiz_id');
+
+
+        if (!$this->quizAssignedModel->isQuizAssignedToStudent($student_id, $quiz_id)) {
+            $this->quizAssignedModel->assignQuizToStudent($student_id, $quiz_id);
+        }
+
+        return redirect()->to(route_to('students'));
+    }
+
+
+
 }

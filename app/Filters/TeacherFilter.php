@@ -7,7 +7,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class TeacherFilter implements FilterInterface
 {
-    public function before(RequestInterface $request)
+    public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
         $userType = $session->get('user_type_id');
@@ -24,7 +24,7 @@ class TeacherFilter implements FilterInterface
         return; // W przeciwnym wypadku nie rób nic i pozwól przejść dalej
     }
 
-    public function after(RequestInterface $request, ResponseInterface $response)
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
         // Metoda after zostaje wywołana po zakończeniu akcji kontrolera
     }

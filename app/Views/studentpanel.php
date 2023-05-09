@@ -31,7 +31,7 @@
                         </div>
                         <div class="col">
                             <a href="<?php echo route_to('myresults', $user_id); ?>"
-                                class="btn btn-lg btn-warning w-100" type="submit">My results</a>
+                                class="btn btn-lg btn-primary w-100" type="submit">My results</a>
                         </div>
                     </div>
 

@@ -17,18 +17,19 @@ class QuizAssignedModel extends Model
     }
     public function get_quizzes_todo($student_id, $student_class)
     {
+
+
         $builder = $this->db->table('quiz_assigned');
         $builder->select('*');
         $builder->join('quiz', 'quiz.quiz_id = quiz_assigned.quiz_assigned_quiz_id');
         $builder->where('(quiz_assigned_student_id = ' . $student_id . ' OR quiz_assigned_class_id = ' . $student_class . ')');
 
         $builder->whereNotIn('quiz_assigned.quiz_assigned_id', function ($subquery) use ($student_id) {
-            $subquery->select('quiz_assigned_id');
+            $subquery->select('assignment_id');
             $subquery->from('results');
             $subquery->where('student_id', $student_id);
         });
         $quizzes = $builder->get()->getResult();
-
 
         return $quizzes;
     }
@@ -63,16 +64,7 @@ class QuizAssignedModel extends Model
         $this->insert($data);
     }
 
-    public function assignQuizToStudent($student_id, $quiz_id)
-    {
-        // przypisz quiz do ucznia
-        $data = [
-            'quiz_assigned_student_id' => $student_id,
-            'quiz_assigned_quiz_id' => $quiz_id
-        ];
 
-        $this->insert($data);
-    }
     public function isQuizAssignedToClass($class_id, $quiz_id)
     {
         $quizAssigned = $this->db->table('quiz_assigned')
@@ -86,5 +78,27 @@ class QuizAssignedModel extends Model
             return false;
         }
     }
+    public function isQuizAssignedToStudent($user_id, $quiz_id)
+    {
+        $quizAssigned = $this->db->table('quiz_assigned')
+            ->where('quiz_assigned_student_id', $user_id)
+            ->where('quiz_assigned_quiz_id', $quiz_id)
+            ->get()->getRow();
 
+        if ($quizAssigned) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function assignQuizToStudent($user_id, $quiz_id)
+    {
+        // przypisz quiz do ucznia
+        $data = [
+            'quiz_assigned_student_id' => $user_id,
+            'quiz_assigned_quiz_id' => $quiz_id
+        ];
+
+        $this->insert($data);
+    }
 }

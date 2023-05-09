@@ -4,11 +4,19 @@ namespace App\Controllers\Student;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
+use App\Models\MyResultsModel;
+
 
 class MyResults extends BaseController
 {
-    public function index($student_id)
+    public function index($user_id)
     {
-        echo ' <h1> myquizzes' . $student_id . '</h1>';
+
+        $resultModel = new MyResultsModel();
+
+        $lastResults['lastResults'] = $resultModel->getLastResults($user_id);
+
+        return view('myresults', $lastResults);
     }
+
 }

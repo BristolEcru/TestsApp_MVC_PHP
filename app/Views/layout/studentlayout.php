@@ -16,23 +16,27 @@
 <body class="d-flex flex-column min-vh-100">
 
     <nav class="navbar navbar-expand-lg navbar-dark  bg-success">
-
+        <?php $session = session();
+        $user_id = $session->get('id'); ?>
         <a class="navbar-brand" href="/Home">Quiz App</a>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/Home">Go back <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="<?php echo base_url('student/studentpanel/' . $user_id); ?>">Student home
+                        page</a>
                 </li>
                 <li class="nav-item">
 
-                    <a class="nav-link" href="#"> </a>
+                    <a class="nav-link" href="<?php echo route_to('myquizzes', $user_id) ?>"> My quizzes</a>
                 </li>
                 <li class="nav-item">
-
+                    <a class="nav-link" href="<?php echo route_to('myresults', $user_id) ?>"> My results</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"> </a>

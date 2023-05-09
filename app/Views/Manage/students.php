@@ -4,49 +4,68 @@
 
 
 <div class="container mt-4">
-    <h2>Students individual assignment</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Class Name</th>
-                <th>Name</th>
-
-                <th>Assigned Quizzes</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($students as $className => $classStudents): ?>
-
+    <h2>Students assignments</h2><br>
+    <table class="table">
+        <table class="table table-striped">
+            <thead class="thead-dark">
                 <tr>
-                    <td colspan="5"><strong>
-                            <?php echo $className; ?>
-                        </strong></td>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Class Quizzes</th>
+                    <th>Individual Quizzes</th>
+                    <th>Actions</th>
                 </tr>
-                <?php foreach ($classStudents as $student): ?>
+            </thead>
+            <tbody>
+                <?php foreach ($students as $name => $student): ?>
                     <tr>
                         <td>
-                            <?php echo $student['name']; ?>
+                            <?= $name ?>
                         </td>
                         <td>
-                            <?php echo $student['email']; ?>
+                            <?= $student['class_name'] ?>
                         </td>
-                        <td>
-                            <?php echo $student['quiz_name']; ?>
-                        </td>
-                        <td>
 
-                            <a href="<?php echo base_url('editstudent/' . $student['id']); ?>">Edit</a>
-                            <a href="<?php echo base_url('deletestudent/' . $student['id']); ?>">Delete</a>
-                            <a href="<?php echo base_url('assignquiztostudent/' . $student['id']); ?>">Assign Quiz to
-                                Student</a>
+                        <td>
+                            <?php foreach ($student['class_quizzes'] as $class_quiz): ?>
+
+                                <?php foreach ($class_quiz['quiz_names'] as $quiz_name): ?>
+                                    <?= $quiz_name ?><br>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
                         </td>
+                        <td>
+                            <?php foreach ($student['individual_quizzes'] as $quiz_name): ?>
+                                <?= $quiz_name ?><br>
+                            <?php endforeach; ?>
+                        </td>
+                        <td>
+                            <div class="block d-flex justify-content-between">
+                                <form action="<?php echo route_to('editstudent'); ?>" method="POST">
+                                    <button type="submit" class=" btn-primary mr-3" type="button" id="">
+                                        <input type="hidden" name="user_id" value=" <?= $student['user_id'] ?>">
+                                        Edit Student
+                                    </button>
+                                </form>
+                                <form action="<?php echo route_to('deletestudent'); ?>" method="POST">
+                                    <button type="submit" class="btn-danger mr-3" type="button" id="">
+                                        <input type="hidden" name="user_id" value="<?= $student['user_id'] ?>">
+                                        Delete Student
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+
                     </tr>
                 <?php endforeach; ?>
-            <?php endforeach; ?>
+            </tbody>
+        </table>
 
-        </tbody>
-    </table>
+
+
+
+
+
 </div>
 <script>
     $(document).ready(function () {

@@ -11,26 +11,23 @@
 
             <hr><br>
             <h4>Choose a quiz to do:</h4>
-
-
             <br>
             <?php foreach ($quizzes as $row) {
-
-                $quiz_id = $row->quiz_id['quiz_id'];
-                $quiz_assigned_id = $row->quiz_assigned_id['quiz_assigned_id'];
                 ?>
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
                             <?= $row->quiz_name ?>
                         </h5>
-                        <a href="<?php echo route_to('quiztoload', $quiz_id . '/' . $quiz_assigned_id); ?>"
-                            class="btn btn-primary">Start
-                            Quiz</a>
+                        <a href="<?= site_url('student/studentpanel/quiztoload/' . $row->quiz_id . '/' . $row->quiz_assigned_id) ?>"
+                            class="btn btn-primary">Start quiz</a>
+
+
 
                     </div>
                 </div>
-            <?php } ?>
+            <?php
+            } ?>
 
 
         </div>
